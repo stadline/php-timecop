@@ -1095,6 +1095,17 @@ PHP_FUNCTION(timecop_time)
    Get UNIX timestamp for a date */
 PHP_FUNCTION(timecop_mktime)
 {
+	zend_long hou = 0, min = 0, sec = 0, mon = 0, day = 0, yea = 0;
+	ZEND_PARSE_PARAMETERS_START(0, 6)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(hou)
+		Z_PARAM_LONG(min)
+		Z_PARAM_LONG(sec)
+		Z_PARAM_LONG(mon)
+		Z_PARAM_LONG(day)
+		Z_PARAM_LONG(yea)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_MKTIME("mktime", "date");
 }
 /* }}} */
@@ -1103,6 +1114,17 @@ PHP_FUNCTION(timecop_mktime)
    Get UNIX timestamp for a GMT date */
 PHP_FUNCTION(timecop_gmmktime)
 {
+	zend_long hou = 0, min = 0, sec = 0, mon = 0, day = 0, yea = 0;
+	ZEND_PARSE_PARAMETERS_START(0, 6)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(hou)
+		Z_PARAM_LONG(min)
+		Z_PARAM_LONG(sec)
+		Z_PARAM_LONG(mon)
+		Z_PARAM_LONG(day)
+		Z_PARAM_LONG(yea)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_MKTIME("gmmktime", "gmdate");
 }
 /* }}} */
@@ -1111,6 +1133,14 @@ PHP_FUNCTION(timecop_gmmktime)
    Format a local date/time */
 PHP_FUNCTION(timecop_date)
 {
+	zend_string *format;
+	zend_long ts;
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STR(format)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(ts)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("date", 1);
 }
 /* }}} */
@@ -1119,6 +1149,14 @@ PHP_FUNCTION(timecop_date)
    Format a GMT date/time */
 PHP_FUNCTION(timecop_gmdate)
 {
+	zend_string *format;
+	zend_long ts;
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STR(format)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(ts)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("gmdate", 1);
 }
 /* }}} */
@@ -1127,6 +1165,14 @@ PHP_FUNCTION(timecop_gmdate)
    Format a local time/date as integer */
 PHP_FUNCTION(timecop_idate)
 {
+	zend_string *format;
+	zend_long ts;
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STR(format)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(ts)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("idate", 1);
 }
 /* }}} */
@@ -1135,6 +1181,12 @@ PHP_FUNCTION(timecop_idate)
    Get date/time information */
 PHP_FUNCTION(timecop_getdate)
 {
+	zend_long ts;
+	ZEND_PARSE_PARAMETERS_START(0, 1)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(ts)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("getdate", 0);
 }
 /* }}} */
@@ -1144,6 +1196,14 @@ PHP_FUNCTION(timecop_getdate)
  the associative_array argument is set to 1 other wise it is a regular array */
 PHP_FUNCTION(timecop_localtime)
 {
+	zend_long timestamp;
+	zend_bool associative;
+	ZEND_PARSE_PARAMETERS_START(0, 2)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(timestamp)
+		Z_PARAM_BOOL(associative)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("localtime", 0);
 }
 /* }}} */
@@ -1152,6 +1212,14 @@ PHP_FUNCTION(timecop_localtime)
    Convert string representation of date and time to a timestamp */
 PHP_FUNCTION(timecop_strtotime)
 {
+	zend_string *times;
+	zend_long preset_ts;
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STR(times)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(preset_ts)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("strtotime", 1);
 }
 /* }}} */
@@ -1160,6 +1228,14 @@ PHP_FUNCTION(timecop_strtotime)
    Format a local time/date according to locale settings */
 PHP_FUNCTION(timecop_strftime)
 {
+	zend_string *format;
+	zend_long timestamp;
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STR(format)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(timestamp)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("strftime", 1);
 }
 /* }}} */
@@ -1168,6 +1244,14 @@ PHP_FUNCTION(timecop_strftime)
    Format a GMT/UCT time/date according to locale settings */
 PHP_FUNCTION(timecop_gmstrftime)
 {
+	zend_string *format;
+	zend_long timestamp = 0;
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STR(format)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(timestamp)
+	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+
 	TIMECOP_CALL_FUNCTION("gmstrftime", 1);
 }
 /* }}} */
