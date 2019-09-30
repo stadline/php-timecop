@@ -1,41 +1,17 @@
-# php-timecop [![Travis CI build status](https://travis-ci.org/hnw/php-timecop.svg?branch=master)](https://travis-ci.org/hnw/php-timecop) [![CircleCI build status](https://circleci.com/gh/hnw/php-timecop.svg?style=shield)](https://circleci.com/gh/hnw/php-timecop) [![Wercker build status](https://app.wercker.com/status/bb9856dda9b2ced0bbfa44d50d7fc034/s/master "wercker status")](https://app.wercker.com/project/bykey/bb9856dda9b2ced0bbfa44d50d7fc034)[![Build status](https://ci.appveyor.com/api/projects/status/1q7c9bwera4cmv5g/branch/master?svg=true)](https://ci.appveyor.com/project/hnw/php-timecop/branch/master)
+# php-timecop [![Travis CI build status](https://travis-ci.org/kiddivouchers/php-timecop.svg?branch=master)](https://travis-ci.org/kiddivouchers/php-timecop)
+
+## FORK
+
+Fork of [original package](https://github.com/hnw/php-timecop) maintained by [Wider Plan](https://www.widerplan.com/).
 
 ## DESCRIPTION
 
 A PHP extension providing "time travel" and "time freezing" capabilities, inspired by [ruby timecop gem](https://github.com/travisjeffery/timecop).
 
-## INSTALL (with package manager)
-
-If you are using macOS, you can install php-timecop with [Homebrew](https://brew.sh/) .
-
-```
-brew install homebrew/php/php71-timecop
-```
-
-In Fedora, you can install php-timecop from official repository as php-pecl-timecop
-```
-sudo dnf install php-pecl-timecop
-```
-
-In RHEL/CentOS, you can install php-timecop from [Remi's RPM repository](https://rpms.remirepo.net/).
-
-```
-sudo yum install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-sudo yum install yum-utils
-sudo yum-config-manager --enable remi-php71
-sudo yum install php-pecl-timecop
-```
-
-Otherwise, you can use pecl command to install php-timecop.
-
-```
-pecl install timecop-beta
-```
-
 ## INSTALL (with phpize)
 
 ```
-git clone https://github.com/hnw/php-timecop.git
+git clone https://github.com/kiddivouchers/php-timecop.git
 cd php-timecop
 phpize
 ./configure
