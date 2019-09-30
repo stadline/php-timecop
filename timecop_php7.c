@@ -361,13 +361,6 @@ PHP_MINIT_FUNCTION(timecop)
 	REGISTER_INI_ENTRIES();
 	register_timecop_classes();
 
-	if (TIMECOP_G(func_override)) {
-		if (SUCCESS != timecop_func_override() ||
-			SUCCESS != timecop_class_override()) {
-			return FAILURE;
-		}
-	}
-
 	return SUCCESS;
 }
 /* }}} */
@@ -377,12 +370,7 @@ PHP_MINIT_FUNCTION(timecop)
 PHP_MSHUTDOWN_FUNCTION(timecop)
 {
 	UNREGISTER_INI_ENTRIES();
-	
-	if (TIMECOP_G(func_override)) {
-		timecop_func_override_clear();
-		timecop_class_override_clear();
-	}
-	
+
 	return SUCCESS;
 }
 /* }}} */
@@ -394,6 +382,13 @@ PHP_RINIT_FUNCTION(timecop)
 	ZEND_TSRMLS_CACHE_UPDATE();
 #endif
 
+	if (TIMECOP_G(func_override)) {
+		if (SUCCESS != timecop_func_override() ||
+			SUCCESS != timecop_class_override()) {
+			return FAILURE;
+		}
+	}
+
 	return SUCCESS;
 }
 /* }}} */
@@ -401,6 +396,11 @@ PHP_RINIT_FUNCTION(timecop)
 /* {{{ PHP_RSHUTDOWN_FUNCTION(timecop) */
 PHP_RSHUTDOWN_FUNCTION(timecop)
 {
+	if (TIMECOP_G(func_override)) {
+		timecop_func_override_clear();
+		timecop_class_override_clear();
+	}
+
 	if (Z_TYPE(TIMECOP_G(orig_request_time)) == IS_NULL) {
 		restore_request_time();
 	}
