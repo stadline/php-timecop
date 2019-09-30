@@ -1562,6 +1562,15 @@ static void _timecop_date_create_from_format(INTERNAL_FUNCTION_PARAMETERS, int i
 			   memchr(orig_format_str, 'l', orig_format_len) ||
 			   memchr(orig_format_str, 'U', orig_format_len)) {
 		ZVAL_STRING(&fixed_format, "Y-m-d H:i:s.??????");
+	} else if (memchr(orig_format_str, 'u', orig_format_len)) {
+		// https://bugs.php.net/bug.php?id=78603
+#if PHP_VERSION_ID >= 70300
+		ZVAL_STRING(&fixed_format, "Y-m-d ??:??:??.??????");
+#elif PHP_VERSION_ID >= 70100
+		ZVAL_STRING(&fixed_format, "Y-m-d H:i:s.u");
+#else
+		ZVAL_STRING(&fixed_format, "Y-m-d H:i:s.??????");
+#endif
 	} else {
 #if PHP_VERSION_ID >= 70100
 		ZVAL_STRING(&fixed_format, "Y-m-d H:i:s.u");
