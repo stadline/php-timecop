@@ -14,7 +14,7 @@ phpinfo();
 --EXPECTREGEX--
 .*
 timecop => enabled
-Version => \d+\.\d+\.\d+
+Version => \d+\.\d+\.\d+-wp\d+
 
 Directive => Local Value => Master Value
 timecop\.func_override => 1 => 1
