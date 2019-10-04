@@ -1,0 +1,6 @@
+/.dockerignore
+/.editorconfig
+/.git
+/.gitignore
+/.travis.yml
+/Dockerfile

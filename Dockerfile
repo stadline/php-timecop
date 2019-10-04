@@ -19,12 +19,17 @@ USER build
 
 COPY --chown=build:build . /src
 
-CMD : \
+RUN : \
     && cd src \
+    && if [ -f configure ]; then echo "Run git clean -fX" >&2; exit 1; fi \
     && scripts/compile 5.6 /dst \
     && scripts/compile 7.0 /dst \
     && scripts/compile 7.1 /dst \
     && scripts/compile 7.2 /dst \
     && scripts/compile 7.3 /dst \
+    && make clean \
+    && ls -l /dst
+
+CMD : \
     && cd /dst \
-    && tar -c *.so
+    && tar -cf - *.so | cat
