@@ -118,7 +118,7 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 
 ## CHANGELOG
 
-### version 1.2.10-wp1, 2019/09/30
+### version 1.2.10-wp1, 2019/10/04
 - Fix test failure when using PHP 7.3 ([#42](https://github.com/hnw/php-timecop/issues/42))
 - Fix some ZTS issues ([PR #45](https://github.com/hnw/php-timecop/pull/45))
 - Ensure strict types are respected ([#43](https://github.com/hnw/php-timecop/issues/43))
