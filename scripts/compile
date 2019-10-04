@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -eu
+
+PHP_VERSION="$1"; shift
+PHP_API=$(php-config$PHP_VERSION --phpapi)
+OUTPUT="$1/timecop_${PHP_API}.so"; shift
+
+if [ -f Makefile ]; then
+    make clean
+fi
+
+phpize$PHP_VERSION
+./configure --with-php-config=$(which php-config$PHP_VERSION)
+make -B
+make test NO_INTERACTION=1 TEST_PHPDBG_EXECUTABLE=$(which phpdbg$PHP_VERSION)
+cp modules/timecop.so "$OUTPUT"
