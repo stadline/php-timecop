@@ -13,5 +13,5 @@ fi
 phpize$PHP_VERSION
 ./configure --with-php-config=$(which php-config$PHP_VERSION)
 make -B
-make test NO_INTERACTION=1 TEST_PHPDBG_EXECUTABLE=$(which phpdbg$PHP_VERSION)
+make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TEST_PHPDBG_EXECUTABLE=$(which phpdbg$PHP_VERSION)
 cp modules/timecop.so "$OUTPUT"
