@@ -1,3 +1,4 @@
+# Usage: docker run --rm $(docker build -q .) | tar -x
 FROM ubuntu:18.04
 
 RUN : \
