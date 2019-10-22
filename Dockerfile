@@ -1,3 +1,4 @@
+# Usage: docker run --rm $(docker build -q .) | tar -x
 FROM ubuntu:18.04
 
 RUN : \
@@ -28,8 +29,10 @@ RUN : \
     && scripts/compile 7.2 /dst \
     && scripts/compile 7.3 /dst \
     && make clean \
+    && (cd /dst && sha256sum timecop_*.so > SHA256SUMS) \
+    && cat /dst/SHA256SUMS \
     && ls -l /dst
 
 CMD : \
     && cd /dst \
-    && tar -cf - *.so | cat
+    && tar -cf - *.so SHA256SUMS | cat

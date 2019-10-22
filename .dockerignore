@@ -4,3 +4,5 @@
 /.gitignore
 /.travis.yml
 /Dockerfile
+/SHA256SUMS
+/timecop_*.so
