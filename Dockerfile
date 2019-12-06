@@ -1,4 +1,4 @@
-# Usage: docker run --rm $(docker build -q .) | tar -x
+# Usage: docker build --pull . && (docker run --rm $(docker build -q .) | tar -x)
 FROM ubuntu:18.04
 
 RUN : \
