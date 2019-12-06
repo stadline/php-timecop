@@ -118,6 +118,9 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 
 ## CHANGELOG
 
+### version 1.2.10-wp3, 2019/12/06
+- Support PHP 7.4.
+
 ### version 1.2.10-wp2, 2019/10/22
 - Fix incorrect class returned with DateTimeImmutable::createFromFormat() and
   pipe character.
