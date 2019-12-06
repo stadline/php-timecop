@@ -12,6 +12,7 @@ RUN : \
         php7.1-phpdbg php7.1-dev \
         php7.2-phpdbg php7.2-dev \
         php7.3-phpdbg php7.3-dev \
+        php7.4-phpdbg php7.4-dev \
     && adduser --disabled-password --gecos '' --no-create-home build \
     && mkdir -p /dst \
     && chown build:build /dst
@@ -28,6 +29,7 @@ RUN : \
     && scripts/compile 7.1 /dst \
     && scripts/compile 7.2 /dst \
     && scripts/compile 7.3 /dst \
+    && scripts/compile 7.4 /dst \
     && make clean \
     && (cd /dst && sha256sum timecop_*.so > SHA256SUMS) \
     && cat /dst/SHA256SUMS \
