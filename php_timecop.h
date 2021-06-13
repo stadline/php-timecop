@@ -210,6 +210,15 @@ struct timecop_override_class_entry {
    examples in any other php module directory.
 */
 
+/* Redeclare macros as no-ops which were removed in PHP 8. */
+#if PHP_VERSION_ID >= 80000
+#define TSRMLS_D void
+#define TSRMLS_DC
+#define TSRMLS_C
+#define TSRMLS_CC
+#define TSRMLS_FETCH()
+#endif
+
 #if PHP_VERSION_ID >= 70000
 #  define TIMECOP_G(v) ZEND_MODULE_GLOBALS_ACCESSOR(timecop, v)
 #  if defined(ZTS) && defined(COMPILE_DL_TIMECOP)
