@@ -27,3 +27,8 @@ if (isset($required_method)) {
         }
     }
 }
+if (isset($required_php_major_version)) {
+    if ($required_php_major_version !== \PHP_MAJOR_VERSION) {
+        die("skip PHP ${required_php_major_version}.x required for this test.");
+    }
+}
