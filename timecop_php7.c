@@ -1723,7 +1723,7 @@ static inline void _call_php_function_with_params(const char *function_name, zva
 	zval callable;
 	ZVAL_STRING(&callable, function_name);
 
-	call_user_function_ex(EG(function_table), NULL, &callable, retval_ptr, param_count, params, 1, NULL);
+	call_user_function(EG(function_table), NULL, &callable, retval_ptr, param_count, params);
 
 	zval_ptr_dtor(&callable);
 }
