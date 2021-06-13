@@ -353,9 +353,6 @@ static inline zval* _call_php_method_with_0_params(zval **object_pp, zend_class_
 static inline zval* _call_php_method_with_1_params(zval **object_pp, zend_class_entry *obj_ce, const char *method_name, zval **retval_ptr_ptr, zval *arg1 TSRMLS_DC);
 static inline zval* _call_php_method_with_2_params(zval **object_pp, zend_class_entry *obj_ce, const char *method_name, zval **retval_ptr_ptr, zval *arg1, zval *arg2 TSRMLS_DC);
 static inline zval* _call_php_method(zval **object_pp, zend_class_entry *obj_ce, const char *method_name, zval **retval_ptr_ptr, int param_count, zval* arg1, zval* arg2 TSRMLS_DC);
-static inline void _call_php_function_with_0_params(const char *function_name, zval **retval_ptr_ptr TSRMLS_DC);
-static inline void _call_php_function_with_1_params(const char *function_name, zval **retval_ptr_ptr, zval *arg1 TSRMLS_DC);
-static inline void _call_php_function_with_2_params(const char *function_name, zval **retval_ptr_ptr, zval *arg1, zval *arg2 TSRMLS_DC);
 static void _call_php_function_with_3_params(const char *function_name, zval **retval_ptr_ptr, zval *arg1, zval *arg2, zval *arg3 TSRMLS_DC);
 static inline void _call_php_function_with_params(const char *function_name, zval **retval_ptr_ptr, zend_uint param_count, zval **params[] TSRMLS_DC);
 
@@ -998,7 +995,7 @@ static void _timecop_call_function(INTERNAL_FUNCTION_PARAMETERS, const char *fun
 		argc++;
 	}
 
-	call_php_function_with_params(function_name, &retval_ptr, argc, params);
+	_call_php_function_with_params(function_name, &retval_ptr, argc, params TSRMLS_CC);
 
 	efree(params);
 
@@ -1034,7 +1031,7 @@ static void _timecop_call_mktime(INTERNAL_FUNCTION_PARAMETERS, const char *mktim
 		php_error_docref(NULL TSRMLS_CC, E_STRICT, "You should be using the time() function instead");
 	}
 
-	call_php_function_with_params(mktime_function_name, &retval_ptr, params_size, params);
+	_call_php_function_with_params(mktime_function_name, &retval_ptr, params_size, params TSRMLS_CC);
 
 	for (i = argc; i < MKTIME_NUM_ARGS; i++) {
 		zval_ptr_dtor(&filled_value[i]);
@@ -1720,23 +1717,10 @@ static inline zval* _call_php_method(zval **object_pp, zend_class_entry *obj_ce,
 	return zend_call_method(object_pp, obj_ce, NULL, method_name, strlen(method_name), retval_ptr_ptr, param_count, arg1, arg2 TSRMLS_CC);
 }
 
-static inline void _call_php_function_with_0_params(const char *function_name, zval **retval_ptr_ptr TSRMLS_DC)
-{
-	_call_php_method_with_0_params(NULL, NULL, function_name, retval_ptr_ptr TSRMLS_CC);
-}
-
-static inline void _call_php_function_with_1_params(const char *function_name, zval **retval_ptr_ptr, zval *arg1 TSRMLS_DC)
-{
-	_call_php_method_with_1_params(NULL, NULL, function_name, retval_ptr_ptr, arg1 TSRMLS_CC);
-}
-static inline void _call_php_function_with_2_params(const char *function_name, zval **retval_ptr_ptr, zval *arg1, zval *arg2 TSRMLS_DC)
-{
-	_call_php_method_with_2_params(NULL, NULL, function_name, retval_ptr_ptr, arg1, arg2 TSRMLS_CC);
-}
 static void _call_php_function_with_3_params(const char *function_name, zval **retval_ptr_ptr, zval *arg1, zval *arg2, zval *arg3 TSRMLS_DC)
 {
 	if (arg3 == NULL) {
-		_call_php_function_with_2_params(function_name, retval_ptr_ptr, arg1, arg2 TSRMLS_CC);
+		call_php_function_with_2_params(function_name, retval_ptr_ptr, arg1, arg2 TSRMLS_CC);
 	} else {
 		zval *zps[3] = {arg1, arg2, arg3};
 		zval **params[3] = {&zps[0], &zps[1], &zps[2]};
