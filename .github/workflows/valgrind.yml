@@ -1,0 +1,87 @@
+name: Valgrind
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  build:
+    name: PHP ${{ matrix.php-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - '5.6.40'
+          - '7.4.19'
+          - '8.0.7'
+        os:
+          - 'ubuntu-20.04'
+    steps:
+      - name: Install valgrind
+        run: |
+          sudo apt-get install -y valgrind
+      - name: Cache PHP
+        id: cache-php
+        uses: actions/cache@v2
+        with:
+          path: |
+            php-${{ matrix.php-version }}
+          key: php-${{ matrix.php-version }}_${{ matrix.os }}
+      - name: Download PHP
+        run: |
+          cd "$(mktemp -d)"
+
+          wget "https://www.php.net/distributions/php-keyring.gpg"
+          wget "https://www.php.net/distributions/php-${{ matrix.php-version }}.tar.xz"
+          wget "https://www.php.net/distributions/php-${{ matrix.php-version }}.tar.xz.asc"
+
+          gpg --import php-keyring.gpg
+          gpg --verify "php-${{ matrix.php-version }}.tar.xz.asc"
+
+          tar --directory "$GITHUB_WORKSPACE" -xvf "php-${{ matrix.php-version }}.tar.xz"
+        if: steps.cache-php.outputs.cache-hit != 'true'
+      - name: Compile PHP
+        run: |
+          ./configure \
+            --with-valgrind \
+            --enable-debug \
+            --enable-phpdbg \
+            --without-libxml \
+            --without-sqlite3 \
+            --without-pdo-sqlite \
+            --disable-dom \
+            --disable-simplexml \
+            --disable-xml \
+            --disable-xmlreader \
+            --disable-xmlwriter \
+            --disable-opcache \
+            --disable-fileinfo \
+            --disable-cgi \
+            --disable-phar \
+            --disable-filter \
+            --disable-pdo \
+            --without-iconv \
+            --disable-posix \
+            --disable-ctype \
+            --disable-tokenizer \
+            --disable-session
+
+          make
+        if: steps.cache-php.outputs.cache-hit != 'true'
+        working-directory: php-${{ matrix.php-version }}
+      - name: Install PHP
+        run: |
+          sudo make install
+        working-directory: php-${{ matrix.php-version }}
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: timecop
+      - name: Test Timecop
+        run: |
+          phpize
+          ./configure
+          make
+          make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TESTS="--show-all -m"
+        working-directory: timecop
