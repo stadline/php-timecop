@@ -152,19 +152,10 @@ ZEND_END_MODULE_GLOBALS(timecop)
  * Trick for guarding the multi-referenced internal function from function destructor on PHP 7.2.0+
  * See: https://github.com/hnw/php-timecop/issues/29#issuecomment-332171527
  */
-#define GUARD_FUNCTION_ARG_INFO_BEGIN(zend_func) { \
-    zend_arg_info *orig_arg_info; \
-    zend_function *zf = zend_func; \
-    if (zf->type == ZEND_INTERNAL_FUNCTION) { \
-        orig_arg_info = zf->common.arg_info; \
-        zf->common.arg_info = NULL; \
-    }
+#define GUARD_FUNCTION_ARG_INFO_BEGIN(zend_func) \
+	zend_func->common.arg_info = NULL;
 
-#define GUARD_FUNCTION_ARG_INFO_END() \
-    if (zf->type == ZEND_INTERNAL_FUNCTION) { \
-        zf->common.arg_info = orig_arg_info; \
-    } \
-}
+#define GUARD_FUNCTION_ARG_INFO_END()
 
 struct timecop_override_func_entry {
 	char *orig_func;
