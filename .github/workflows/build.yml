@@ -1,0 +1,58 @@
+name: Build Timecop
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  release:
+    types: [created]
+jobs:
+  build:
+    name: PHP ${{ matrix.php-version }} (ZTS ${{ matrix.php-zts }})
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - '5.6'
+          - '7.0'
+          - '7.1'
+          - '7.2'
+          - '7.3'
+          - '7.4'
+        valgrind: [false]
+        php-zts:
+          - nts
+          # @todo Add ts when setup-php supports ZTS on Ubuntu
+        # include: []
+          # - php-version: '7.4'
+          #   valgrind: true
+    steps:
+      - name: Install valgrind
+        run: |
+          sudo apt-get install -y valgrind
+        if: ${{ matrix.valgrind }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+        env:
+          phpts: ${{ matrix.php-zts }}
+      - name: Set PHP_API
+        run: |
+          echo "PHP_API=$(php-config --phpapi)" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          phpize
+          ./configure
+          make
+          make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TESTS="--show-all"
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: timecop_${{ env.PHP_API }}.so
+          path: modules/timecop.so
+          if-no-files-found: error
