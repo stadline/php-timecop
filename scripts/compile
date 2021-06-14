@@ -1,17 +1,93 @@
-#!/bin/sh
+#!/bin/bash
 
-set -eu
+main() {
+    set -euo pipefail
 
-PHP_VERSION="$1"; shift
-PHP_API=$(php-config$PHP_VERSION --phpapi)
-OUTPUT="$1/timecop_${PHP_API}.so"; shift
+    local positional=()
+    local key
 
-if [ -f Makefile ]; then
-    make clean
-fi
+    while [ $# -gt 0 ]; do
+        key="$1"
 
-phpize$PHP_VERSION
-./configure --with-php-config=$(which php-config$PHP_VERSION)
-make -B
-make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TEST_PHPDBG_EXECUTABLE=$(which phpdbg$PHP_VERSION)
-cp modules/timecop.so "$OUTPUT"
+        case $key in
+            --output-dir)
+                readonly OUTPUT_DIR="$2"
+                shift # past argument
+                shift # past value
+            ;;
+            -h|--help)
+                usage
+                return 0
+            ;;
+            -*)
+                usage >&2
+                return 1
+            ;;
+            *) # unknown option
+                positional+=("$1")
+                shift
+            ;;
+        esac
+    done
+    set -- "${positional[@]}" # restore positional parameters
+
+   compile_each "$@"
+}
+
+usage() {
+    echo "${0} [--output-dir DIR] [PHP1] [PHP2] [PHPn]"
+    echo ""
+    echo "Example:"
+    echo "${0} --output-dir /tmp 8.0 7.4"
+    echo
+}
+
+compile_each() {
+    local php_version
+    local php_api
+    local bin_php
+    local bin_phpdbg
+    local bin_phpconfig
+
+    while [ $# -gt 0 ]; do
+        php_version="$1"; shift
+        bin_php="$(php_binary php ${php_version})"
+        if [ "${php_version:0:1}" = "5" ]; then
+            bin_phpdbg=
+        else
+            bin_phpdbg="$(php_binary phpdbg ${php_version})"
+        fi
+        bin_phpconfig="$(php_binary php-config ${php_version})"
+        php_api="$($bin_phpconfig --phpapi)"
+
+        if [ -f Makefile ]; then
+            make clean
+        fi
+
+        phpize${php_version}
+        ./configure --with-php-config="$bin_phpconfig"
+        make -B PHP_EXECUTABLE="$bin_php"
+        make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 PHP_EXECUTABLE="$bin_php" TEST_PHP_EXECUTABLE="$bin_php" TEST_PHPDBG_EXECUTABLE="$bin_phpdbg"
+
+        if [ ! -z "${OUTPUT_DIR:-}" ]; then
+            cp modules/timecop.so "${OUTPUT_DIR}/timecop_${php_api}.so"
+        fi
+    done
+}
+
+php_binary() {
+    local binary="$1"; shift
+    local version="$1"; shift
+
+    local result="$(which "${binary}${version}")"
+
+    if [ -z "$result" ]; then
+        echo "Cannot find ${binary}${version}, is it installed?" >&2
+
+        return 1
+    fi
+
+    echo "$result"
+}
+
+main "$@"
