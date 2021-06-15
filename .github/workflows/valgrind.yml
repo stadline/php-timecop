@@ -89,7 +89,8 @@ jobs:
             --disable-posix \
             --disable-ctype \
             --disable-tokenizer \
-            --disable-session
+            --disable-session \
+            --without-pear
 
           make
         if: steps.cache-php.outputs.cache-hit != 'true'
