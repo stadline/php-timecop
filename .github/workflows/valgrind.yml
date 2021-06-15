@@ -39,6 +39,7 @@ jobs:
               || gpg --keyserver pgp.mit.edu --recv-keys "$1"
           }
 
+          echo "::group::Fetch PGP keys"
           # https://www.php.net/gpg-keys.php
           case "${{ matrix.php-version }}" in
             5.6.*)
@@ -57,13 +58,16 @@ jobs:
               echo "::warning::No keys imported!"
             ;;
           esac
+          echo "::endgroup::"
 
+          echo "::group::Download PHP"
           wget "https://www.php.net/distributions/php-${{ matrix.php-version }}.tar.xz"
           wget "https://www.php.net/distributions/php-${{ matrix.php-version }}.tar.xz.asc"
+          echo "::endgroup::"
 
           gpg --verify "php-${{ matrix.php-version }}.tar.xz.asc"
 
-          tar --directory "$GITHUB_WORKSPACE" -xvf "php-${{ matrix.php-version }}.tar.xz"
+          tar --directory "$GITHUB_WORKSPACE" -xf "php-${{ matrix.php-version }}.tar.xz"
         if: steps.cache-php.outputs.cache-hit != 'true'
       - name: Compile PHP
         run: |
