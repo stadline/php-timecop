@@ -42,7 +42,7 @@ foreach ($tests_args as $args) {
         timecop_freeze(new TimecopOrigDateTime());
         $dt2 = call_user_func_array(array("DateTime","createFromFormat"), $args);
         $dt3 = call_user_func_array(array("TimecopOrigDateTime","createFromFormat"), $args);
-        if ($start_time === time()) {
+        if ($start_time === timecop_orig_time()) {
             if ($dt2 && $dt3 && ($dt2->format("c") !== $dt3->format("c"))) {
                 printf("DateTime::createFromFormat('%s', '%s') is differ from TimecopOrigDateTime::createFromFormat() : %s !== %s\n",
                        $args[0], $args[1], $dt2->format("c"), $dt3->format("c"));

@@ -41,7 +41,7 @@ foreach ($tests_args as $args) {
         timecop_freeze(new TimecopOrigDateTime());
         $dt2 = call_user_func_array("date_create_immutable_from_format", $args);
         $dt3 = call_user_func_array("timecop_orig_date_create_immutable_from_format", $args);
-        if ($start_time === time()) {
+        if ($start_time === timecop_orig_time()) {
             if ($dt2 && $dt3 && ($dt2->format("c") !== $dt3->format("c"))) {
                 printf("date_create_immutable_from_format('%s', '%s') is differ from timecop_orig_date_create_immutable_from_format() : %s !== %s\n",
                        $args[0], $args[1], $dt2->format("c"), $dt3->format("c"));
