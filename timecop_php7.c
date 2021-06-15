@@ -305,9 +305,6 @@ static inline zval* _call_php_method_with_0_params(zval *object_pp, zend_class_e
 static inline zval* _call_php_method_with_1_params(zval *object_pp, zend_class_entry *obj_ce, const char *method_name, zval *retval_ptr, zval *arg1);
 static inline zval* _call_php_method_with_2_params(zval *object_pp, zend_class_entry *obj_ce, const char *method_name, zval *retval_ptr, zval *arg1, zval *arg2);
 static inline zval* _call_php_method(zval *object_pp, zend_class_entry *obj_ce, const char *method_name, zval *retval_ptr, int param_count, zval* arg1, zval* arg2);
-static inline void _call_php_function_with_0_params(const char *function_name, zval *retval_ptr);
-static inline void _call_php_function_with_1_params(const char *function_name, zval *retval_ptr, zval *arg1);
-static inline void _call_php_function_with_2_params(const char *function_name, zval *retval_ptr, zval *arg1, zval *arg2);
 static void _call_php_function_with_3_params(const char *function_name, zval *retval_ptr, zval *arg1, zval *arg2, zval *arg3);
 static inline void _call_php_function_with_params(const char *function_name, zval *retval_ptr, uint32_t param_count, zval params[]);
 
@@ -940,7 +937,7 @@ static void _timecop_call_function(INTERNAL_FUNCTION_PARAMETERS, const char *fun
 		param_count++;
 	}
 
-	call_php_function_with_params(function_name, return_value, param_count, params);
+	_call_php_function_with_params(function_name, return_value, param_count, params);
 
 	efree(params);
 }
@@ -972,7 +969,7 @@ static void _timecop_call_mktime(INTERNAL_FUNCTION_PARAMETERS, const char *mktim
 		php_error_docref(NULL, E_DEPRECATED, "You should be using the time() function instead");
 	}
 
-	call_php_function_with_params(mktime_function_name, return_value, param_count, params);
+	_call_php_function_with_params(mktime_function_name, return_value, param_count, params);
 
 	for (i = ZEND_NUM_ARGS(); i < MKTIME_NUM_ARGS; i++) {
 		zval_ptr_dtor(&params[i]);
@@ -1688,34 +1685,33 @@ static inline zval* _call_php_method_with_2_params(zval *object_pp, zend_class_e
 
 static inline zval* _call_php_method(zval *object_pp, zend_class_entry *obj_ce, const char *method_name, zval *retval_ptr, int param_count, zval* arg1, zval* arg2)
 {
-	return zend_call_method(object_pp, obj_ce, NULL, method_name, strlen(method_name), retval_ptr, param_count, arg1, arg2);
-}
-
-static inline void _call_php_function_with_0_params(const char *function_name, zval *retval_ptr)
-{
-	_call_php_method_with_0_params(NULL, NULL, function_name, retval_ptr);
-}
-
-static inline void _call_php_function_with_1_params(const char *function_name, zval *retval_ptr, zval *arg1)
-{
-	_call_php_method_with_1_params(NULL, NULL, function_name, retval_ptr, arg1);
-}
-
-static inline void _call_php_function_with_2_params(const char *function_name, zval *retval_ptr, zval *arg1, zval *arg2)
-{
-	_call_php_method_with_2_params(NULL, NULL, function_name, retval_ptr, arg1, arg2);
+	return zend_call_method(
+#if PHP_MAJOR_VERSION >= 8
+		object_pp == NULL ? NULL : Z_OBJ_P(object_pp),
+#else
+		object_pp,
+#endif
+		obj_ce,
+		NULL,
+		method_name,
+		strlen(method_name),
+		retval_ptr,
+		param_count,
+		arg1,
+		arg2
+	);
 }
 
 static inline void _call_php_function_with_3_params(const char *function_name, zval *retval_ptr, zval *arg1, zval *arg2, zval *arg3)
 {
 	if (arg3 == NULL) {
-		_call_php_function_with_2_params(function_name, retval_ptr, arg1, arg2);
+		call_php_function_with_2_params(function_name, retval_ptr, arg1, arg2);
 	} else {
 		zval params[3];
 		ZVAL_COPY(&params[0], arg1);
 		ZVAL_COPY(&params[1], arg2);
 		ZVAL_COPY(&params[2], arg3);
-		call_php_function_with_params(function_name, retval_ptr, 3, params);
+		_call_php_function_with_params(function_name, retval_ptr, 3, params);
 		zval_ptr_dtor(&params[0]);
 		zval_ptr_dtor(&params[1]);
 		zval_ptr_dtor(&params[2]);
@@ -1727,7 +1723,7 @@ static inline void _call_php_function_with_params(const char *function_name, zva
 	zval callable;
 	ZVAL_STRING(&callable, function_name);
 
-	call_user_function_ex(EG(function_table), NULL, &callable, retval_ptr, param_count, params, 1, NULL);
+	call_user_function(EG(function_table), NULL, &callable, retval_ptr, param_count, params);
 
 	zval_ptr_dtor(&callable);
 }

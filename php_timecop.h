@@ -189,19 +189,16 @@ struct timecop_override_class_entry {
 	_call_php_method_with_2_params(obj, ce, method_name, retval, arg1, arg2 TSRMLS_CC)
 
 #define call_php_function_with_0_params(function_name, retval) \
-	_call_php_function_with_0_params(function_name, retval TSRMLS_CC)
+	_call_php_method_with_0_params(NULL, NULL, function_name, retval TSRMLS_CC)
 
 #define call_php_function_with_1_params(function_name, retval, arg1) \
-	_call_php_function_with_1_params(function_name, retval, arg1 TSRMLS_CC)
+	_call_php_method_with_1_params(NULL, NULL, function_name, retval, arg1 TSRMLS_CC)
 
 #define call_php_function_with_2_params(function_name, retval, arg1, arg2) \
-	_call_php_function_with_2_params(function_name, retval, arg1, arg2 TSRMLS_CC)
+	_call_php_method_with_2_params(NULL, NULL, function_name, retval, arg1, arg2 TSRMLS_CC)
 
 #define call_php_function_with_3_params(function_name, retval, arg1, arg2, arg3) \
 	_call_php_function_with_3_params(function_name, retval, arg1, arg2, arg3 TSRMLS_CC)
-
-#define call_php_function_with_params(function_name, retval, param_count, params) \
-	_call_php_function_with_params(function_name, retval, param_count, params TSRMLS_CC)
 
 /* In every utility function you add that needs to use variables 
    in php_timecop_globals, call TSRMLS_FETCH(); after declaring other 
@@ -212,6 +209,15 @@ struct timecop_override_class_entry {
    encouraged to rename these macros something shorter, see
    examples in any other php module directory.
 */
+
+/* Redeclare macros as no-ops which were removed in PHP 8. */
+#if PHP_VERSION_ID >= 80000
+#define TSRMLS_D void
+#define TSRMLS_DC
+#define TSRMLS_C
+#define TSRMLS_CC
+#define TSRMLS_FETCH()
+#endif
 
 #if PHP_VERSION_ID >= 70000
 #  define TIMECOP_G(v) ZEND_MODULE_GLOBALS_ACCESSOR(timecop, v)
