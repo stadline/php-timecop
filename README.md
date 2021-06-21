@@ -118,6 +118,11 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 
 ## CHANGELOG
 
+### version 1.3.0, 2021/06/21
+- Support PHP 8.0
+- Fixed memory leak
+- Code cleanup
+
 ### version 1.2.10-wp3, 2019/12/06
 - Support PHP 7.4.
 
@@ -185,7 +190,7 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 ### version 1.0.5, 2013/11/26
 - Fix `TimecopDateTime::createFromFormat()` to reutrn `TimecopDateTime` instance on PHP >= 5.3.4
   - The previous version returns `DateTime` instance
-  - Implement identical function `timecop_date_create_from_format()` 
+  - Implement identical function `timecop_date_create_from_format()`
   - BUG: not supporting "relative formats" for this method currently.
 - Fix behavior of `TimecopDateTime::_construct()` when its 2nd argument is specified.
 

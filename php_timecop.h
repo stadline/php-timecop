@@ -25,7 +25,7 @@ SOFTWARE.
 #ifndef PHP_TIMECOP_H
 #define PHP_TIMECOP_H
 
-#define PHP_TIMECOP_VERSION "1.2.10-wp1"
+#define PHP_TIMECOP_VERSION "1.3.0"
 
 extern zend_module_entry timecop_module_entry;
 #define phpext_timecop_ptr &timecop_module_entry
@@ -192,12 +192,12 @@ struct timecop_override_class_entry {
 #define call_php_function_with_3_params(function_name, retval, arg1, arg2, arg3) \
 	_call_php_function_with_3_params(function_name, retval, arg1, arg2, arg3 TSRMLS_CC)
 
-/* In every utility function you add that needs to use variables 
-   in php_timecop_globals, call TSRMLS_FETCH(); after declaring other 
+/* In every utility function you add that needs to use variables
+   in php_timecop_globals, call TSRMLS_FETCH(); after declaring other
    variables used by that function, or better yet, pass in TSRMLS_CC
    after the last function argument and declare your utility function
    with TSRMLS_DC after the last declared argument.  Always refer to
-   the globals in your function as TIMECOP_G(variable).  You are 
+   the globals in your function as TIMECOP_G(variable).  You are
    encouraged to rename these macros something shorter, see
    examples in any other php module directory.
 */
