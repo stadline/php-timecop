@@ -21,18 +21,10 @@ jobs:
           - '7.3'
           - '7.4'
           - '8.0'
-        valgrind: [false]
         php-zts:
           - nts
           # @todo Add ts when setup-php supports ZTS on Ubuntu
-        # include: []
-          # - php-version: '7.4'
-          #   valgrind: true
     steps:
-      - name: Install valgrind
-        run: |
-          sudo apt-get install -y valgrind
-        if: ${{ matrix.valgrind }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

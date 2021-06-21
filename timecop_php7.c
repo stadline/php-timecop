@@ -531,10 +531,9 @@ static int timecop_func_override()
 							  zf_orig, sizeof(zend_internal_function));
 		function_add_ref(zf_orig);
 
-		GUARD_FUNCTION_ARG_INFO_BEGIN(zf_orig);
+		FIX_FUNCTION_ARG_INFO_DTOR(zf_orig);
 		zend_hash_str_update_mem(CG(function_table), p->orig_func, strlen(p->orig_func),
 								 zf_ovrd, sizeof(zend_internal_function));
-		GUARD_FUNCTION_ARG_INFO_END();
 		function_add_ref(zf_ovrd);
 
 		p++;
@@ -639,15 +638,13 @@ static int timecop_func_override_clear()
 			continue;
 		}
 
-		GUARD_FUNCTION_ARG_INFO_BEGIN(zf_ovld);
+		FIX_FUNCTION_ARG_INFO_DTOR(zf_ovld);
 		zend_hash_str_update_mem(CG(function_table), p->orig_func, strlen(p->orig_func),
 								 zf_orig, sizeof(zend_internal_function));
-		GUARD_FUNCTION_ARG_INFO_END();
 		function_add_ref(zf_orig);
 
-		GUARD_FUNCTION_ARG_INFO_BEGIN(zf_orig);
+		FIX_FUNCTION_ARG_INFO_DTOR(zf_orig);
 		zend_hash_str_del(CG(function_table), p->save_func, strlen(p->save_func));
-		GUARD_FUNCTION_ARG_INFO_END();
 
 		p++;
 	}

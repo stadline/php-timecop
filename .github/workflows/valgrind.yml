@@ -1,0 +1,116 @@
+name: Valgrind
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  build:
+    name: PHP ${{ matrix.php-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - '5.6.40'
+          - '7.4.19'
+          - '8.0.7'
+        os:
+          - 'ubuntu-20.04'
+    steps:
+      - name: Install valgrind
+        run: |
+          sudo apt-get install -y valgrind
+      - name: Cache PHP
+        id: cache-php
+        uses: actions/cache@v2
+        with:
+          path: |
+            php-${{ matrix.php-version }}
+          key: php-${{ matrix.php-version }}_${{ matrix.os }}
+      - name: Download PHP
+        run: |
+          cd "$(mktemp -d)"
+
+          gpg_fetch_key() {
+            gpg --keyserver keyserver.ubuntu.com  --recv-keys "$1" \
+              || gpg --keyserver keys.openpgp.org --recv-keys "$1" \
+              || gpg --keyserver keys.gnupg.net --recv-keys "$1" \
+              || gpg --keyserver pgp.mit.edu --recv-keys "$1"
+          }
+
+          echo "::group::Fetch PGP keys"
+          # https://www.php.net/gpg-keys.php
+          case "${{ matrix.php-version }}" in
+            5.6.*)
+              gpg_fetch_key FE857D9A90D90EC1
+              gpg_fetch_key C2BF0BC433CFC8B3
+            ;;
+            7.4.*)
+              gpg_fetch_key 5A52880781F755608BF815FC910DEB46F53EA312
+              gpg_fetch_key 42670A7FE4D0441C8E4632349E4FDC074A4EF02D
+            ;;
+            8.0.*)
+              gpg_fetch_key 1729F83938DA44E27BA0F4D3DBDB397470D12172
+              gpg_fetch_key BFDDD28642824F8118EF77909B67A5C12229118F
+            ;;
+            *)
+              echo "::warning::No keys imported!"
+            ;;
+          esac
+          echo "::endgroup::"
+
+          echo "::group::Download PHP"
+          wget "https://www.php.net/distributions/php-${{ matrix.php-version }}.tar.xz"
+          wget "https://www.php.net/distributions/php-${{ matrix.php-version }}.tar.xz.asc"
+          echo "::endgroup::"
+
+          gpg --verify "php-${{ matrix.php-version }}.tar.xz.asc"
+
+          tar --directory "$GITHUB_WORKSPACE" -xf "php-${{ matrix.php-version }}.tar.xz"
+        if: steps.cache-php.outputs.cache-hit != 'true'
+      - name: Compile PHP
+        run: |
+          ./configure \
+            --with-valgrind \
+            --enable-debug \
+            --enable-phpdbg \
+            --without-libxml \
+            --without-sqlite3 \
+            --without-pdo-sqlite \
+            --disable-dom \
+            --disable-simplexml \
+            --disable-xml \
+            --disable-xmlreader \
+            --disable-xmlwriter \
+            --disable-opcache \
+            --disable-fileinfo \
+            --disable-cgi \
+            --disable-phar \
+            --disable-filter \
+            --disable-pdo \
+            --without-iconv \
+            --disable-posix \
+            --disable-ctype \
+            --disable-tokenizer \
+            --disable-session \
+            --without-pear
+
+          make
+        if: steps.cache-php.outputs.cache-hit != 'true'
+        working-directory: php-${{ matrix.php-version }}
+      - name: Install PHP
+        run: |
+          sudo make install
+        working-directory: php-${{ matrix.php-version }}
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: timecop
+      - name: Test Timecop
+        run: |
+          phpize
+          ./configure
+          make
+          make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TESTS="--show-all -m"
+        working-directory: timecop
