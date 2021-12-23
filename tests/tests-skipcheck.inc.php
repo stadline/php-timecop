@@ -5,6 +5,11 @@ if (isset($required_version)) {
         die("skip PHP ${required_version}+ required for this test");
     }
 }
+if (isset($required_version_less_than)) {
+    if (version_compare($required_version_less_than, PHP_VERSION, "<")) {
+        die("skip PHP < ${required_version_less_than} required for this test");
+    }
+}
 if (isset($required_func)) {
     foreach ($required_func as $func_name) {
         if (!function_exists($func_name)) {
@@ -25,10 +30,5 @@ if (isset($required_method)) {
         if (!method_exists($class_name, $method_name)) {
             die("skip $class_name::$method_name() method is not available.");
         }
-    }
-}
-if (isset($required_php_major_version)) {
-    if ($required_php_major_version !== \PHP_MAJOR_VERSION) {
-        die("skip PHP ${required_php_major_version}.x required for this test.");
     }
 }
