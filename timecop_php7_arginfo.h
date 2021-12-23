@@ -49,24 +49,14 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_mktime, 0, 0, 0)
 	ZEND_ARG_INFO(0, year)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_gmmktime, 0, 0, 0)
-	ZEND_ARG_INFO(0, hour)
-	ZEND_ARG_INFO(0, min)
-	ZEND_ARG_INFO(0, sec)
-	ZEND_ARG_INFO(0, mon)
-	ZEND_ARG_INFO(0, day)
-	ZEND_ARG_INFO(0, year)
-ZEND_END_ARG_INFO()
+#define arginfo_timecop_gmmktime arginfo_timecop_mktime
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_date, 0, 0, 1)
 	ZEND_ARG_INFO(0, format)
 	ZEND_ARG_INFO(0, timestamp)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_gmdate, 0, 0, 1)
-	ZEND_ARG_INFO(0, format)
-	ZEND_ARG_INFO(0, timestamp)
-ZEND_END_ARG_INFO()
+#define arginfo_timecop_gmdate arginfo_timecop_date
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_idate, 0, 0, 1)
 	ZEND_ARG_INFO(0, format)
@@ -92,10 +82,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_strftime, 0, 0, 1)
 	ZEND_ARG_INFO(0, timestamp)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_gmstrftime, 0, 0, 1)
-	ZEND_ARG_INFO(0, format)
-	ZEND_ARG_INFO(0, timestamp)
-ZEND_END_ARG_INFO()
+#define arginfo_timecop_gmstrftime arginfo_timecop_strftime
 
 #ifdef HAVE_GETTIMEOFDAY
 ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_microtime, 0, 0, 0)
