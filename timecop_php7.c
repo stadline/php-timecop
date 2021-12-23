@@ -91,7 +91,11 @@ static const struct timecop_override_class_entry timecop_override_class_table[] 
 	{NULL, NULL, NULL, NULL}
 };
 
+#if PHP_VERSION_ID >= 80000
+#include "timecop_php8_arginfo.h"
+#else
 #include "timecop_php7_arginfo.h"
+#endif
 
 /* {{{ timecop_functions[] */
 const zend_function_entry timecop_functions[] = {
