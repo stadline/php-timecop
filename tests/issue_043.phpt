@@ -2,7 +2,8 @@
 Check for issue #43 (Overridden functions ignore declare(strict_types=1))
 --SKIPIF--
 <?php
-$required_php_major_version = 7;
+$required_version = '7.0.0';
+$required_version_less_than = '8.0.0';
 $required_func = array("strtotime");
 include(__DIR__."/tests-skipcheck.inc.php");
 --INI--
