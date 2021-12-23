@@ -98,11 +98,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_unixtojd, 0, 0, 0)
 	ZEND_ARG_INFO(0, timestamp)
 ZEND_END_ARG_INFO()
 
+// timecop_date_create()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_date_create, 0, 0, 0)
 	ZEND_ARG_INFO(0, time)
 	ZEND_ARG_INFO(0, object)
 ZEND_END_ARG_INFO()
 
+// timecop_date_create_from_format()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_date_create_from_format, 0, 0, 2)
 	ZEND_ARG_INFO(0, format)
 	ZEND_ARG_INFO(0, time)
@@ -112,3 +114,15 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_date_create_from_format, 0, 0, 2)
 	ZEND_ARG_INFO(0, object)
 #endif
 ZEND_END_ARG_INFO()
+
+// TimecopDateTime::__construct()
+#define arginfo_class_TimecopDateTime___construct arginfo_timecop_date_create
+
+// timecop_date_create_immutable()
+#define arginfo_timecop_date_create_immutable arginfo_timecop_date_create
+
+// timecop_date_create_immutable_from_format()
+#define arginfo_timecop_date_create_immutable_from_format arginfo_timecop_date_create_from_format
+
+// TimecopDateTimeImmutable::__construct
+#define arginfo_class_TimecopDateTimeImmutable___construct arginfo_class_TimecopDateTime___construct
