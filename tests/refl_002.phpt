@@ -14,8 +14,6 @@ timecop.func_override=0
 
 $functions = [
 	'time' => 'timecop_time',
-	'mktime' => 'timecop_mktime',
-	'gmmktime' => 'timecop_gmmktime',
 	'date' => 'timecop_date',
 	'gmdate' => 'timecop_gmdate',
 	'idate' => 'timecop_idate',
@@ -34,8 +32,6 @@ require __DIR__.'/check-func-refl.inc.php';
 
 --EXPECT--
 Checking time vs timecop_time
-Checking mktime vs timecop_mktime
-Checking gmmktime vs timecop_gmmktime
 Checking date vs timecop_date
 Checking gmdate vs timecop_gmdate
 Checking idate vs timecop_idate
