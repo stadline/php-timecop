@@ -19,4 +19,4 @@ try {
 	echo $e->getMessage();
 }
 --EXPECT--
-timecop_strtotime(): Argument #1 ($time) must be of type string, null given
+timecop_strtotime(): Argument #1 ($datetime) must be of type string, null given

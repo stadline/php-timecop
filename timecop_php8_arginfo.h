@@ -38,60 +38,60 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO(arginfo_timecop_return, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO(arginfo_timecop_time, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_timecop_time, 0, 0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_mktime, 0, 0, 0)
-	ZEND_ARG_INFO(0, hour)
-	ZEND_ARG_INFO(0, min)
-	ZEND_ARG_INFO(0, sec)
-	ZEND_ARG_INFO(0, mon)
-	ZEND_ARG_INFO(0, day)
-	ZEND_ARG_INFO(0, year)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_timecop_mktime, 0, 1, MAY_BE_LONG|MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO(0, hour, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, minute, IS_LONG, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, second, IS_LONG, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, month, IS_LONG, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, day, IS_LONG, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, year, IS_LONG, 1, "null")
 ZEND_END_ARG_INFO()
 
 #define arginfo_timecop_gmmktime arginfo_timecop_mktime
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_date, 0, 0, 1)
-	ZEND_ARG_INFO(0, format)
-	ZEND_ARG_INFO(0, timestamp)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_timecop_date, 0, 1, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, format, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, timestamp, IS_LONG, 1, "null")
 ZEND_END_ARG_INFO()
 
 #define arginfo_timecop_gmdate arginfo_timecop_date
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_idate, 0, 0, 1)
-	ZEND_ARG_INFO(0, format)
-	ZEND_ARG_INFO(0, timestamp)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_timecop_idate, 0, 1, MAY_BE_LONG|MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO(0, format, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, timestamp, IS_LONG, 1, "null")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_getdate, 0, 0, 0)
-	ZEND_ARG_INFO(0, timestamp)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_timecop_getdate, 0, 0, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, timestamp, IS_LONG, 1, "null")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_localtime, 0, 0, 0)
-	ZEND_ARG_INFO(0, timestamp)
-	ZEND_ARG_INFO(0, associative_array)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_timecop_localtime, 0, 0, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, timestamp, IS_LONG, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, associative, _IS_BOOL, 0, "false")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_strtotime, 0, 0, 1)
-	ZEND_ARG_INFO(0, time)
-	ZEND_ARG_INFO(0, now)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_timecop_strtotime, 0, 1, MAY_BE_LONG|MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO(0, datetime, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, baseTimestamp, IS_LONG, 1, "null")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_strftime, 0, 0, 1)
-	ZEND_ARG_INFO(0, format)
-	ZEND_ARG_INFO(0, timestamp)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_timecop_strftime, 0, 1, MAY_BE_STRING|MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO(0, format, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, timestamp, IS_LONG, 1, "null")
 ZEND_END_ARG_INFO()
 
 #define arginfo_timecop_gmstrftime arginfo_timecop_strftime
 
 #ifdef HAVE_GETTIMEOFDAY
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_microtime, 0, 0, 0)
-	ZEND_ARG_INFO(0, get_as_float)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_timecop_microtime, 0, 0, MAY_BE_STRING|MAY_BE_DOUBLE)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, as_float, _IS_BOOL, 0, "false")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_gettimeofday, 0, 0, 0)
-	ZEND_ARG_INFO(0, get_as_float)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_timecop_gettimeofday, 0, 0, MAY_BE_ARRAY|MAY_BE_DOUBLE)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, as_float, _IS_BOOL, 0, "false")
 ZEND_END_ARG_INFO()
 #endif
 
@@ -100,34 +100,36 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_unixtojd, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 // timecop_date_create()
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_date_create, 0, 0, 0)
-	ZEND_ARG_INFO(0, time)
-#if PHP_VERSION_ID >= 70100
-	ZEND_ARG_INFO(0, timezone)
-#else
-	ZEND_ARG_INFO(0, object)
-#endif
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_timecop_date_create, 0, 0, TimecopDateTime, MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, datetime, IS_STRING, 0, "\"now\"")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, timezone, DateTimeZone, 1, "null")
 ZEND_END_ARG_INFO()
 
 // timecop_date_create_from_format()
-ZEND_BEGIN_ARG_INFO_EX(arginfo_timecop_date_create_from_format, 0, 0, 2)
-	ZEND_ARG_INFO(0, format)
-	ZEND_ARG_INFO(0, time)
-#if PHP_VERSION_ID >= 70200
-	ZEND_ARG_OBJ_INFO(0, object, DateTimeZone, 1)
-#else
-	ZEND_ARG_INFO(0, object)
-#endif
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_timecop_date_create_from_format, 0, 2, TimecopDateTime, MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO(0, format, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, datetime, IS_STRING, 0)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, timezone, DateTimeZone, 1, "null")
 ZEND_END_ARG_INFO()
 
 // TimecopDateTime::__construct()
-#define arginfo_class_TimecopDateTime___construct arginfo_timecop_date_create
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_TimecopDateTime___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, datetime, IS_STRING, 0, "\"now\"")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, timezone, DateTimeZone, 1, "null")
+ZEND_END_ARG_INFO()
 
 // timecop_date_create_immutable()
-#define arginfo_timecop_date_create_immutable arginfo_timecop_date_create
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_timecop_date_create_immutable, 0, 0, TimecopDateTimeImmutable, MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, datetime, IS_STRING, 0, "\"now\"")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, timezone, DateTimeZone, 1, "null")
+ZEND_END_ARG_INFO()
 
 // timecop_date_create_immutable_from_format()
-#define arginfo_timecop_date_create_immutable_from_format arginfo_timecop_date_create_from_format
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_timecop_date_create_immutable_from_format, 0, 2, TimecopDateTimeImmutable, MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO(0, format, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, datetime, IS_STRING, 0)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, timezone, DateTimeZone, 1, "null")
+ZEND_END_ARG_INFO()
 
 // TimecopDateTimeImmutable::__construct
 #define arginfo_class_TimecopDateTimeImmutable___construct arginfo_class_TimecopDateTime___construct
