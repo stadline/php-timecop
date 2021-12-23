@@ -981,6 +981,19 @@ PHP_FUNCTION(timecop_time)
 PHP_FUNCTION(timecop_mktime)
 {
 	zend_long hou = 0, min = 0, sec = 0, mon = 0, day = 0, yea = 0;
+	zend_bool min_is_null = 1, sec_is_null = 1, mon_is_null = 1, day_is_null = 1, yea_is_null = 1;
+
+#if PHP_VERSION_ID >= 80000
+	ZEND_PARSE_PARAMETERS_START(1, 6)
+		Z_PARAM_LONG(hou)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG_OR_NULL(min, min_is_null)
+		Z_PARAM_LONG_OR_NULL(sec, sec_is_null)
+		Z_PARAM_LONG_OR_NULL(mon, mon_is_null)
+		Z_PARAM_LONG_OR_NULL(day, day_is_null)
+		Z_PARAM_LONG_OR_NULL(yea, yea_is_null)
+	ZEND_PARSE_PARAMETERS_END();
+#else
 	ZEND_PARSE_PARAMETERS_START(0, 6)
 		Z_PARAM_OPTIONAL
 		Z_PARAM_LONG(hou)
@@ -990,6 +1003,7 @@ PHP_FUNCTION(timecop_mktime)
 		Z_PARAM_LONG(day)
 		Z_PARAM_LONG(yea)
 	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+#endif
 
 	TIMECOP_CALL_MKTIME("mktime", "date");
 }
@@ -1000,6 +1014,19 @@ PHP_FUNCTION(timecop_mktime)
 PHP_FUNCTION(timecop_gmmktime)
 {
 	zend_long hou = 0, min = 0, sec = 0, mon = 0, day = 0, yea = 0;
+	zend_bool min_is_null = 1, sec_is_null = 1, mon_is_null = 1, day_is_null = 1, yea_is_null = 1;
+
+#if PHP_VERSION_ID >= 80000
+	ZEND_PARSE_PARAMETERS_START(1, 6)
+		Z_PARAM_LONG(hou)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG_OR_NULL(min, min_is_null)
+		Z_PARAM_LONG_OR_NULL(sec, sec_is_null)
+		Z_PARAM_LONG_OR_NULL(mon, mon_is_null)
+		Z_PARAM_LONG_OR_NULL(day, day_is_null)
+		Z_PARAM_LONG_OR_NULL(yea, yea_is_null)
+	ZEND_PARSE_PARAMETERS_END();
+#else
 	ZEND_PARSE_PARAMETERS_START(0, 6)
 		Z_PARAM_OPTIONAL
 		Z_PARAM_LONG(hou)
@@ -1009,6 +1036,7 @@ PHP_FUNCTION(timecop_gmmktime)
 		Z_PARAM_LONG(day)
 		Z_PARAM_LONG(yea)
 	ZEND_PARSE_PARAMETERS_END_EX(RETURN_FALSE);
+#endif
 
 	TIMECOP_CALL_MKTIME("gmmktime", "gmdate");
 }
