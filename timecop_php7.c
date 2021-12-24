@@ -117,7 +117,7 @@ const zend_function_entry timecop_functions[] = {
 	PHP_FE(timecop_unixtojd, arginfo_timecop_unixtojd)
 	PHP_FE(timecop_date_create, arginfo_timecop_date_create)
 	PHP_FE(timecop_date_create_from_format, arginfo_timecop_date_create_from_format)
-	PHP_FE(timecop_date_create_immutable, arginfo_timecop_date_create)
+	PHP_FE(timecop_date_create_immutable, arginfo_timecop_date_create_immutable)
 	PHP_FE(timecop_date_create_immutable_from_format, arginfo_timecop_date_create_immutable_from_format)
 	{NULL, NULL, NULL}
 };
