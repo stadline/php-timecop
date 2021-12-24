@@ -122,6 +122,9 @@ ZEND_END_ARG_INFO()
 // TimecopDateTime::__construct()
 #define arginfo_class_TimecopDateTime___construct arginfo_timecop_date_create
 
+// TimecopDateTime::createFromFormat()
+#define arginfo_class_TimecopDateTime_createFromFormat arginfo_timecop_date_create_from_format
+
 // timecop_date_create_immutable()
 #define arginfo_timecop_date_create_immutable arginfo_timecop_date_create
 
@@ -130,3 +133,6 @@ ZEND_END_ARG_INFO()
 
 // TimecopDateTimeImmutable::__construct
 #define arginfo_class_TimecopDateTimeImmutable___construct arginfo_class_TimecopDateTime___construct
+
+// TimecopDateTimeImmutable::createFromFormat
+#define arginfo_class_TimecopDateTimeImmutable_createFromFormat arginfo_timecop_date_create_immutable_from_format
