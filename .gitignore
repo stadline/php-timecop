@@ -39,6 +39,7 @@ tests/*.log
 tests/*.php
 tests/*.sh
 tests/*.out
+!tests/*.inc.php
 
 # Ignore C-related temporary files
 *.o

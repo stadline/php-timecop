@@ -2,6 +2,7 @@
 Check for issue #10 (Timecop segfaults when set_error_handler throws an exception)
 --SKIPIF--
 <?php
+$required_version_less_than = "8.0"; // @todo If possible find a way to trigger an exception on PHP8
 include(__DIR__."/tests-skipcheck.inc.php");
 --INI--
 date.timezone=GMT
