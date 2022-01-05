@@ -112,8 +112,13 @@ const zend_function_entry timecop_functions[] = {
 	PHP_FE(timecop_getdate, arginfo_timecop_getdate)
 	PHP_FE(timecop_localtime, arginfo_timecop_localtime)
 	PHP_FE(timecop_strtotime, arginfo_timecop_strtotime)
+#if PHP_VERSION_ID >= 80100
+	PHP_DEP_FE(timecop_strftime, arginfo_timecop_strftime)
+	PHP_DEP_FE(timecop_gmstrftime, arginfo_timecop_gmstrftime)
+#else
 	PHP_FE(timecop_strftime, arginfo_timecop_strftime)
 	PHP_FE(timecop_gmstrftime, arginfo_timecop_gmstrftime)
+#endif
 #ifdef HAVE_GETTIMEOFDAY
 	PHP_FE(timecop_microtime, arginfo_timecop_microtime)
 	PHP_FE(timecop_gettimeofday, arginfo_timecop_gettimeofday)
