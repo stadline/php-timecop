@@ -40,7 +40,7 @@ extension=php_timecop.dll
 ## SYSTEM REQUIREMENTS
 
 - OS: Windows(experimental), Linux, macOS
-- PHP: 5.3.1 - 7.2.x (might work on 5.2.x and 5.3.0, but not tested enough)
+- PHP: 5.6.x - 8.1.x
 - SAPI: Apache, CLI
   - Other SAPIs are not tested, but there is no SAPI-dependent code.
 - non-ZTS(recommended), ZTS
