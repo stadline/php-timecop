@@ -3,17 +3,25 @@
 function decorateIgnoreDeprecation($expectedMessage, \Closure $callback)
 {
     return function () use ($expectedMessage, $callback) {
-        set_error_handler(function ($code, $message) use ($expectedMessage) {
+        $previousHandler = set_error_handler(null, E_DEPRECATED);
+
+        set_error_handler(function ($code, $message, $file, $line) use ($expectedMessage, $previousHandler) {
             if ($message === $expectedMessage) {
                 return true;
             }
 
+            // Call the previous handler if it was the non default.
+            if ($previousHandler !== null) {
+                return $previousHandler($code, $message, $file, $line);
+            }
+
+            // Otherwise fallback to the default handler.
             return false;
         }, E_DEPRECATED);
 
         $result = $callback();
 
-        set_error_handler(null, E_DEPRECATED);
+        set_error_handler($previousHandler, E_DEPRECATED);
 
         return $result;
     };
