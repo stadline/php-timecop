@@ -16,7 +16,13 @@ timecop_freeze(timecop_strtotime("2012-02-29 01:23:45"));
 execute(decorateIfTrue(
     PHP_VERSION_ID >= 80100,
     function (\Closure $callback) {
-        return decorateIgnoreDeprecation('nope', $callback);
+        return decorateIgnoreDeprecation(
+            'Function strftime() is deprecated',
+            decorateIgnoreDeprecation(
+                'Function timecop_strftime() is deprecated',
+                $callback
+            )
+        );
     },
     function () {
         var_dump(strftime("%Y-%m-%d %H:%M:%S"));

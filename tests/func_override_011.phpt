@@ -16,7 +16,13 @@ timecop_freeze(timecop_strtotime("2012-02-29 01:23:45 GMT"));
 execute(decorateIfTrue(
     PHP_VERSION_ID >= 80100,
     function (\Closure $callback) {
-        return decorateIgnoreDeprecation('nope', $callback);
+        return decorateIgnoreDeprecation(
+            'Function gmstrftime() is deprecated',
+            decorateIgnoreDeprecation(
+                'Function timecop_gmstrftime() is deprecated',
+                $callback
+            )
+        );
     },
     function () {
         var_dump(gmstrftime("%Y-%m-%d %H:%M:%S"));
