@@ -50,3 +50,27 @@ jobs:
           name: timecop_${{ env.PHP_API }}.so
           path: modules/timecop.so
           if-no-files-found: error
+  package:
+    name: Package for download
+    runs-on: ubuntu-20.04
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+      - name: Combine artifacts
+        run: |
+          mkdir -p output
+
+          for dir in timecop_*.so; do
+            # Move/rename from timecop.so to timecop_PHPAPI.so
+            mv "${dir}/timecop.so" "output/${dir}"
+          done
+
+          cd output
+          sha256sum *.so > SHA256SUM
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: timecop
+          path: output/*
+          if-no-files-found: error
