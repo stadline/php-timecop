@@ -9,7 +9,24 @@ date.timezone=America/Los_Angeles
 timecop.func_override=0
 --FILE--
 <?php
+require __DIR__.'/functions.inc.php';
+
 timecop_freeze(strtotime("2012-02-29 01:23:45"));
-var_dump(timecop_strftime("%Y-%m-%d %H:%M:%S"));
+
+execute(decorateIfTrue(
+    PHP_VERSION_ID >= 80100,
+    function (\Closure $callback) {
+        return decorateIgnoreDeprecation(
+            'Function strftime() is deprecated',
+            decorateIgnoreDeprecation(
+                'Function timecop_strftime() is deprecated',
+                $callback
+            )
+        );
+    },
+    function () {
+        var_dump(timecop_strftime("%Y-%m-%d %H:%M:%S"));
+    }
+));
 --EXPECT--
 string(19) "2012-02-29 01:23:45"

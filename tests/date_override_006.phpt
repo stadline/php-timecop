@@ -9,6 +9,8 @@ date.timezone=America/Los_Angeles
 timecop.func_override=1
 --FILE--
 <?php
+require __DIR__.'/functions.inc.php';
+
 timecop_freeze(timecop_orig_strtotime("2012-02-29 01:23:45"));
 
 // checking class name of instance
@@ -20,7 +22,14 @@ $dts = array(
     date_create(),
 
     // constuctor with 1 argument(null)
-    date_create(null),
+    execute(decorateIfTrue(PHP_VERSION_ID >= 80100, function (\Closure $callback) {
+        return decorateIgnoreDeprecation(
+            'timecop_date_create(): Passing null to parameter #1 ($datetime) of type string is deprecated',
+            $callback
+        );
+    }, function () {
+        return date_create(null);
+    })),
 
     // constuctor with 1 argument(empty string)
     date_create(""),

@@ -112,8 +112,13 @@ const zend_function_entry timecop_functions[] = {
 	PHP_FE(timecop_getdate, arginfo_timecop_getdate)
 	PHP_FE(timecop_localtime, arginfo_timecop_localtime)
 	PHP_FE(timecop_strtotime, arginfo_timecop_strtotime)
+#if PHP_VERSION_ID >= 80100
+	PHP_DEP_FE(timecop_strftime, arginfo_timecop_strftime)
+	PHP_DEP_FE(timecop_gmstrftime, arginfo_timecop_gmstrftime)
+#else
 	PHP_FE(timecop_strftime, arginfo_timecop_strftime)
 	PHP_FE(timecop_gmstrftime, arginfo_timecop_gmstrftime)
+#endif
 #ifdef HAVE_GETTIMEOFDAY
 	PHP_FE(timecop_microtime, arginfo_timecop_microtime)
 	PHP_FE(timecop_gettimeofday, arginfo_timecop_gettimeofday)
@@ -1375,6 +1380,15 @@ static void _timecop_datetime_constructor_ex(INTERNAL_FUNCTION_PARAMETERS, zval 
 	const char *real_func;
 	zend_class_entry *real_ce;
 
+#if PHP_VERSION_ID >= 80100
+	ZEND_PARSE_PARAMETERS_START(0, 2)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_STRING(orig_time_str, orig_time_len)
+		Z_PARAM_OBJECT_OF_CLASS_OR_NULL(orig_timezone, TIMECOP_G(ce_DateTimeZone))
+	ZEND_PARSE_PARAMETERS_END();
+
+	ZVAL_STRINGL(&orig_time, orig_time_str, orig_time_len);
+#else
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sO!", &orig_time_str, &orig_time_len, &orig_timezone, TIMECOP_G(ce_DateTimeZone)) == FAILURE) {
 		RETURN_FALSE;
 	}
@@ -1384,6 +1398,8 @@ static void _timecop_datetime_constructor_ex(INTERNAL_FUNCTION_PARAMETERS, zval 
 	} else {
 		ZVAL_STRINGL(&orig_time, orig_time_str, orig_time_len);
 	}
+#endif
+
 	if (immutable) {
 		real_func = ORIG_FUNC_NAME("date_create_immutable");
 		real_ce = TIMECOP_G(ce_DateTimeImmutable);
