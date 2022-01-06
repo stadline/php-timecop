@@ -118,6 +118,13 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 
 ## CHANGELOG
 
+### version 1.4.0, 2022/01/06
+- Support PHP 8.1
+- Fix reflection mismatches between native PHP and timecop overrides
+
+### version 1.3.1, 2021/07/13
+- Fixes problems when non standard timezone identifiers are used. ([#52](https://github.com/hnw/php-timecop/issues/52))
+
 ### version 1.3.0, 2021/06/21
 - Support PHP 8.0
 - Fixed memory leak
