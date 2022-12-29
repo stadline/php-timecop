@@ -15,7 +15,8 @@ jobs:
         php-version:
           - '5.6.40'
           - '7.4.19'
-          - '8.0.7'
+          - '8.1.13'
+          - '8.2.0'
         os:
           - 'ubuntu-20.04'
     steps:
@@ -51,9 +52,15 @@ jobs:
               gpg_fetch_key 5A52880781F755608BF815FC910DEB46F53EA312
               gpg_fetch_key 42670A7FE4D0441C8E4632349E4FDC074A4EF02D
             ;;
-            8.0.*)
-              gpg_fetch_key 1729F83938DA44E27BA0F4D3DBDB397470D12172
-              gpg_fetch_key BFDDD28642824F8118EF77909B67A5C12229118F
+            8.1.*)
+              gpg_fetch_key 528995BFEDFBA7191D46839EF9BA0ADA31CBD89E
+              gpg_fetch_key 39B641343D8C104B2B146DC3F9C39DC0B9698544
+              gpg_fetch_key F1F692238FBC1666E5A5CCD4199F9DFEF6FFBAFD
+            ;;
+            8.2.*)
+              gpg_fetch_key 1198C0117593497A5EC5C199286AF1F9897469DC
+              gpg_fetch_key 39B641343D8C104B2B146DC3F9C39DC0B9698544
+              gpg_fetch_key E60913E4DF209907D8E30D96659A97C9CF2A795A
             ;;
             *)
               echo "::warning::No keys imported!"
