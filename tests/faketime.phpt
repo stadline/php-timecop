@@ -2,8 +2,9 @@
 Test with faketime
 --SKIPIF--
 <?php
-return DIRECTORY_SEPARATOR === '\\'
-    || system('which faketime') === '';
+include(__DIR__."/tests-skipcheck.inc.php");
+if (DIRECTORY_SEPARATOR === '\\') die('skip does not run on windows');
+if (exec('which faketime') === '') die('skip faketime is not installed');
 --INI--
 date.timezone=GMT
 timecop.func_override=0
