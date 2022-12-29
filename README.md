@@ -118,6 +118,9 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 
 ## CHANGELOG
 
+### version 1.5.0, 2022/12/29
+- Support PHP 8.2
+
 ### version 1.4.0, 2022/01/06
 - Support PHP 8.1
 - Fix reflection mismatches between native PHP and timecop overrides
