@@ -46,7 +46,7 @@ jobs:
           make
           make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TESTS="--show-all"
       - name: Save artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: timecop_${{ env.PHP_API }}.so
           path: modules/timecop.so
@@ -71,7 +71,7 @@ jobs:
           cd output
           sha256sum *.so > SHA256SUM
       - name: Save artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: timecop
           path: output/*
