@@ -1,0 +1,14 @@
+# https://help.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#about-the-dependabotyml-file
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    open-pull-requests-limit: 5
+    schedule:
+      interval: monthly
+    reviewers:
+      - cs278
+    commit-message:
+      prefix: github-actions
+      include: scope
+    labels: []
