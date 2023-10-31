@@ -27,7 +27,7 @@ jobs:
           - '8.3'
         php-zts:
           - nts
-          # @todo Add ts when setup-php supports ZTS on Ubuntu
+          - ts
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -47,10 +47,18 @@ jobs:
           ./configure
           make
           make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TESTS="--show-all"
-      - name: Save artifact
+      - name: Save artifact (NTS)
         uses: actions/upload-artifact@v3
+        if: matrix.php-zts == 'nts'
         with:
           name: timecop_${{ env.PHP_API }}.so
+          path: modules/timecop.so
+          if-no-files-found: error
+      - name: Save artifact (TS)
+        uses: actions/upload-artifact@v3
+        if: matrix.php-zts == 'ts'
+        with:
+          name: timecop_${{ env.PHP_API }}_zts.so
           path: modules/timecop.so
           if-no-files-found: error
   package:
