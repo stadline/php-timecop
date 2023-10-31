@@ -28,6 +28,11 @@ jobs:
         php-zts:
           - nts
           - ts
+        exclude:
+          - php-version: '5.6'
+            php-zts: 'ts'
+          - php-version: '8.3'
+            php-zts: 'ts'
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
