@@ -36,6 +36,9 @@ jobs:
           coverage: none
         env:
           phpts: ${{ matrix.php-zts }}
+      - name: PHP version
+        run: |
+          php --version
       - name: Set PHP_API
         run: |
           echo "PHP_API=$(php-config --phpapi)" >> $GITHUB_ENV
