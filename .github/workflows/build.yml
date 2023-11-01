@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: PHP ${{ matrix.php-version }} (ZTS ${{ matrix.php-zts }})
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -24,9 +24,15 @@ jobs:
           - '8.0'
           - '8.1'
           - '8.2'
+          - '8.3'
         php-zts:
           - nts
-          # @todo Add ts when setup-php supports ZTS on Ubuntu
+          - ts
+        exclude:
+          - php-version: '5.6'
+            php-zts: 'ts'
+          - php-version: '8.3'
+            php-zts: 'ts'
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -35,6 +41,9 @@ jobs:
           coverage: none
         env:
           phpts: ${{ matrix.php-zts }}
+      - name: PHP version
+        run: |
+          php --version
       - name: Set PHP_API
         run: |
           echo "PHP_API=$(php-config --phpapi)" >> $GITHUB_ENV
@@ -46,15 +55,23 @@ jobs:
           ./configure
           make
           make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TESTS="--show-all"
-      - name: Save artifact
+      - name: Save artifact (NTS)
         uses: actions/upload-artifact@v3
+        if: matrix.php-zts == 'nts'
         with:
           name: timecop_${{ env.PHP_API }}.so
           path: modules/timecop.so
           if-no-files-found: error
+      - name: Save artifact (TS)
+        uses: actions/upload-artifact@v3
+        if: matrix.php-zts == 'ts'
+        with:
+          name: timecop_${{ env.PHP_API }}_zts.so
+          path: modules/timecop.so
+          if-no-files-found: error
   package:
     name: Package for download
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     needs: build
     steps:
