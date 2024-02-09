@@ -1,4 +1,4 @@
-# php-timecop [![Travis CI build status](https://travis-ci.org/kiddivouchers/php-timecop.svg?branch=master)](https://travis-ci.org/kiddivouchers/php-timecop)
+# Timecop for PHP
 
 ## FORK
 
@@ -25,22 +25,10 @@ After install, add these lines to your `php.ini` .
 extension=timecop.so
 ```
 
-## INSTALL (on Windows, experimental)
-
-You can download the extension DLL from [PECL :: Package :: timecop](https://pecl.php.net/package/timecop)
-
-To install the extension, extract zip and copy `php_timecop.dll` to the extension directory.
-
-After install, add these lines to your `php.ini` .
-
-```ini
-extension=php_timecop.dll
-```
-
 ## SYSTEM REQUIREMENTS
 
-- OS: Windows(experimental), Linux, macOS
-- PHP: 5.6.x - 8.1.x
+- OS: Linux, macOS
+- PHP: 5.6.x - 8.3.x
 - SAPI: Apache, CLI
   - Other SAPIs are not tested, but there is no SAPI-dependent code.
 - non-ZTS(recommended), ZTS
@@ -117,6 +105,9 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 ```
 
 ## CHANGELOG
+
+### version 1.6.0, 2024/02/09
+- Support PHP 8.3
 
 ### version 1.5.0, 2022/12/29
 - Support PHP 8.2
@@ -236,6 +227,7 @@ var_dump((new DateTime())->format("c")); // string(25) "2017-01-01T00:00:05+00:0
 The MIT License
 
 Copyright (c) 2012-2017 Yoshio HANAWA
+Copyright (c) 2019-2024 Wider Plan Ltd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
